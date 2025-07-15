@@ -1,0 +1,26 @@
+{
+    "name": "boombaye/maxita-pro",
+    "autoload": {
+        "psr-4": {
+            "Boombaye\\MaxitaPro\\": "src/",
+            "App\\Config\\": "app/config/",
+            "App\\Core\\": "app/core/",
+            "App\\Entity\\": "src/entity",
+            "App\\Controller\\": "src/controller",
+            "App\\Repository\\": "src/repository",
+            "App\\Service\\": "src/services",
+            "App\\Core\\Middlewares\\": "core/middlewares",
+            "App\\Core\\abstract\\": "app/core/abstract"
+            
+        }
+    },
+    "authors": [
+        {
+            "name": "AstouMba",
+            "email": "assalih1303@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
