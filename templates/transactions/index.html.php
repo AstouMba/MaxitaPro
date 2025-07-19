@@ -1,88 +1,90 @@
-
 <main class="flex-1 p-8 overflow-y-auto">
-    <!-- Account Cards -->
-    <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        
-        <div class="bg-orange-500 text-white rounded-2xl p-6">
-            <h3 class="text-xl font-semibold mb-2">Compte Principal</h3>
-            <p class="text-lg font-medium">
-              
-                <?= $_SESSION['client'] ? htmlspecialchars($_SESSION['client']['telephone']) : '---' ?>
-            </p>
-        </div>
-
-       
-        <div class="bg-orange-500 text-white rounded-2xl p-6">
-            <h3 class="text-xl font-semibold mb-2">
-                Solde :
-                <?= isset($solde) ? number_format($solde, 0, ',', ' ') . ' FCFA' : '0.00 FCFA' ?>
-            </h3>
-        </div>
-
-
-       
-        <div class="bg-orange-500 text-white rounded-2xl p-6 flex items-center justify-between">
-            <div class="bg-white text-orange-500 rounded-lg px-4 py-3 font-bold text-lg">
-                MAX IT<br>
-                <span class="text-sm font-normal">SA</span>
-            </div>
-            <div class="w-20 h-20 bg-white rounded-lg flex items-center justify-center">
-                <div class="grid grid-cols-8 gap-1">
-               
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- Action Buttons -->
-    <!-- <div class="flex gap-4 mb-8">
-        <button
-            class="flex items-center space-x-2 bg-white border border-orange-500 text-orange-500 px-6 py-3 rounded-full hover:bg-orange-50 transition-colors">
-            <i class="fas fa-plus"></i>
-            <span>Créer un compte secondaire</span>
-        </button>
-        <button
-            class="flex items-center space-x-2 bg-white border border-orange-500 text-orange-500 px-6 py-3 rounded-full hover:bg-orange-50 transition-colors">
-            <i class="fas fa-exchange-alt"></i>
-            <span>Changer de compte</span>
-        </button>
-    </div> -->
-
+    
     <!-- Transactions Section -->
-    <div class="bg-white rounded-3xl p-8 shadow-sm">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Les 10 dernières transactions</h2>
+    <div class="bg-gradient-to-br from-white to-gray-50 rounded-3xl p-8 shadow-xl border border-gray-100">
+        <h2 class="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-8">
+            Les 10 dernières transactions
+        </h2>
 
-        <!-- Exemple d'une transaction statique -->
-        <div class="space-y-4">
-            <?php  if(!empty($transactions)): ?>
-                <?php foreach ($transactions as $t): ?>
-                    <div class="flex items-center justify-between py-4 border-b border-gray-100">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-credit-card text-gray-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800"><?= ucfirst(htmlspecialchars($t['type'])) ?></h4>
-                                <p class="text-orange-500 text-sm">
-                                    <?= date('d M Y', strtotime($t['date_creation'])) ?>
-                                </p>
-                            </div>
+        <!-- En-tête du tableau -->
+        <div class="grid grid-cols-3 font-bold text-gray-700 border-b-2 border-gray-200 pb-4 mb-6">
+            <div class="flex items-center gap-2">
+                <span class="text-lg"></span>
+                <span>Date</span>
+            </div>
+            <div class="text-center flex items-center justify-center gap-2">
+                <span class="text-lg"></span>
+                <span>Montant</span>
+            </div>
+            <div class="text-right flex items-center justify-end gap-2">
+                <span>Type</span>
+                <span class="text-lg"></span>
+            </div>
+        </div>
+
+        <div class="space-y-3">
+            <?php if (!empty($transactions)): ?>
+                <?php foreach ($transactions as $index => $t): ?>
+                    <div class="grid grid-cols-3 items-center py-4 px-4 rounded-xl border border-gray-100 hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 hover:border-blue-200 hover:shadow-md transform hover:-translate-y-1 transition-all duration-200 animate-fade-in-up" style="animation-delay: <?= $index * 0.1 ?>s;">
+                        <!-- Date -->
+                        <div class="text-gray-600 font-medium">
+                            <?= date('d M Y', strtotime($t['date'])) ?>
                         </div>
+
+                        <!-- Montant -->
+                        <div class="text-center">
+                            <span class="inline-block bg-gradient-to-r from-gray-800 to-gray-600 text-white px-4 py-2 rounded-xl font-semibold shadow-md">
+                                <?= number_format($t['montant'], 0, ',', ' ') ?> FCFA
+                            </span>
+                        </div>
+
+                        <!-- Type -->
                         <div class="text-right">
-                            <p class="font-semibold <?= $t['type'] === 'retrait' ? 'text-red-500' : 'text-green-600' ?>">
-                                <?= ($t['type'] === 'retrait' ? '-' : '+') . number_format($t['montant'], 0, ',', ' ') ?> fcfa
-                            </p>
+                            <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold uppercase tracking-wide
+                                <?php
+                                echo match ($t['typetransaction']) {
+                                    'paiement' => 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 border border-gray-300',
+                                    'retrait' => 'bg-gradient-to-r from-red-100 to-red-200 text-red-700 border border-red-300',
+                                    'depot' => 'bg-gradient-to-r from-green-100 to-green-200 text-green-700 border border-green-300',
+                                    default => 'bg-gray-100 text-gray-500'
+                                };
+                                ?>">
+                                <?= ucfirst(htmlspecialchars($t['typetransaction'])) ?>
+                            </span>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p class="text-gray-500">Aucune transaction trouvée.</p>
+                <div class="text-center py-12">
+                    <div class="text-6xl mb-4">💳</div>
+                    <p class="text-gray-500 text-lg">Aucune transaction trouvée.</p>
+                </div>
             <?php endif; ?>
         </div>
-        <div class="mt-4 text-right">
-            <a href="/transactions" class="text-orange-600 hover:underline font-medium">Voir plus &rarr;</a>
+
+        <div class="mt-8 text-right">
+            <a href="/transactions" class="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transform hover:translate-x-1 transition-all duration-200">
+                Voir plus →
+            </a>
         </div>
-
-
     </div>
+
 </main>
+
+<style>
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out forwards;
+    opacity: 0;
+}
+</style>

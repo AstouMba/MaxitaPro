@@ -2,7 +2,8 @@
 namespace App\Service;
 
 use App\Repository\UtilisateurRepository;
-use App\Core\APP;
+use App\Core\App;
+use App\Entity\Utilisateurs;
 class SecurityService
 {
     private UtilisateurRepository $utilisateurRepository;
@@ -20,10 +21,10 @@ class SecurityService
         return self::$instance;
     }
 
-    public function getUserByLoginAndPassword($login , $password):?array{
-        $result=$this->utilisateurRepository->selectByLoginAndPassword($login,$password);
-        return $result;
-    }
+public function getUserByLoginAndPassword($login , $password): ?Utilisateurs {
+    return $this->utilisateurRepository->selectByLoginAndPassword($login, $password);
+}
+
 
 
 }

@@ -1,34 +1,53 @@
 <?php
+
 namespace App\Repository;
-use App\Core\Database;
+
+use App\Core\abstract\AbstractRepository;
 use PDO;
-use App\Core\App;
 
-class CompteRepository
+class CompteRepository extends AbstractRepository
 {
-
-    private Database $database;
     private static ?CompteRepository $instance = null;
 
-    public function __construct(){
-    $this->database= App::getDependencies('database');
+    public function __construct()
+    {
+        parent::__construct(); // NON modifié
     }
 
-    public static function getInstance():self {                                     
-        if(self::$instance===null){
-            self::$instance = new Self();
+    public static function getInstance(): self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self(); // NON modifié
         }
         return self::$instance;
     }
-     public function getSoldeByUserId(int $userId): ?array
+
+    public function getSoldeByUserId(int $userId): ?array
     {
         $sql = "SELECT * FROM compte WHERE userid = :userId AND typecompte = 'principal'";
         $stmt = $this->database->getPdo()->prepare($sql);
-        $stmt->execute(['userId' => $userId]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        // var_dump($result); die;
-        return $result;
+        $stmt->execute([':userId' => $userId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
+    public function insertCompte(array $data): void
+    {
+        $sql = "INSERT INTO compte (numerotel, typecompte, userid)
+                VALUES (:numerotel, :typecompte, :userid)";
+        $stmt = $this->database->getPdo()->prepare($sql);
+        $stmt->execute([
+            ':numerotel' => $data['numerotel'],
+            ':typecompte' => $data['typecompte'],
+            ':userid' => $data['userid'],
+        ]);
+    }
+
+    public function getComptesSecondairesByUserId(int $userId): array
+{
+    $sql = "SELECT * FROM compte WHERE userid = :userId AND typecompte = 'secondaire'";
+    $stmt = $this->database->getPdo()->prepare($sql);
+    $stmt->execute([':userId' => $userId]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 }
