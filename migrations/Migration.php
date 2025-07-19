@@ -67,7 +67,40 @@ try {
 
     if ($driver === 'mysql') {
         $tables = [
-            // Tables MySQL
+"CREATE TABLE IF NOT EXISTS Utilisateurs (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    prenom VARCHAR(100) NOT NULL,
+    login VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    numerocarteidentite VARCHAR(50) UNIQUE,
+    photorecto TEXT,
+    photoverso TEXT,
+    adresse VARCHAR(255),
+    typeuser VARCHAR(20) NOT NULL,
+    CHECK (typeuser IN ('client', 'service_commercial'))
+);",
+
+"CREATE TABLE IF NOT EXISTS Compte (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    datecreation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    solde DECIMAL(15, 2) DEFAULT 0.00,
+    numerotel VARCHAR(20) NOT NULL,
+    typecompte VARCHAR(20) NOT NULL,
+    userid INT UNSIGNED NOT NULL,
+    FOREIGN KEY (userid) REFERENCES Utilisateurs(id),
+    CHECK (typecompte IN ('principal', 'secondaire'))
+);",
+
+"CREATE TABLE IF NOT EXISTS Transaction (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    typetransaction VARCHAR(20) NOT NULL,
+    montant DECIMAL(15, 2) NOT NULL,
+    compteid INT UNSIGNED NOT NULL,
+    FOREIGN KEY (compteid) REFERENCES Compte(id),
+    CHECK (typetransaction IN ('depot', 'retrait', 'paiement'))
+);"
         ];
     } else {
         $pdo->exec("DO $$

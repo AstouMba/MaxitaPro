@@ -15,7 +15,7 @@ class UtilisateurRepository extends AbstractRepository
     }
      public function selectByLoginAndPassword($login, $password): ?Utilisateurs
 {
-    $sql = "SELECT * FROM utilisateurs WHERE login = :login AND password = :password";
+    $sql = "SELECT * FROM Utilisateurs WHERE login = :login AND password = :password";
     $stmt = $this->database->getPdo()->prepare($sql);
     $stmt->execute([
         "login" => $login,
@@ -29,7 +29,7 @@ class UtilisateurRepository extends AbstractRepository
 
    public function getAll(): array
 {
-    $sql = "SELECT * FROM utilisateurs";
+    $sql = "SELECT * FROM Utilisateurs";
     $stmt = $this->database->getPdo()->prepare($sql);
     $stmt->execute();
     $usersData = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -40,7 +40,7 @@ class UtilisateurRepository extends AbstractRepository
 
    public function insertUser(array $data): Utilisateurs
 {
-    $sql = "INSERT INTO utilisateurs (nom, prenom, login, password, numeroCarteIdentite, adresse, typeUser, photoRecto, photoVerso)
+    $sql = "INSERT INTO Utilisateurs (nom, prenom, login, password, numeroCarteIdentite, adresse, typeUser, photoRecto, photoVerso)
             VALUES (:nom, :prenom, :login, :password, :numeroCarteIdentite, :adresse, :typeUser, :photoRecto, :photoVerso)
             RETURNING *";
 

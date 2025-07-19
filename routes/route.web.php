@@ -28,7 +28,7 @@ return $routes = [
         "middleware"=>"auth"
 
     ],
-     "/store" => [
+    "/compte/store" => [
     "controller" => CompteController::class,
     "action" => "store",
     "middleware" => "auth"

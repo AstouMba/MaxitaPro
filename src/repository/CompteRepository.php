@@ -11,13 +11,13 @@ class CompteRepository extends AbstractRepository
 
     public function __construct()
     {
-        parent::__construct(); // NON modifié
+        parent::__construct(); 
     }
 
     public static function getInstance(): self
     {
         if (self::$instance === null) {
-            self::$instance = new self(); // NON modifié
+            self::$instance = new self(); 
         }
         return self::$instance;
     }
@@ -32,14 +32,20 @@ class CompteRepository extends AbstractRepository
 
     public function insertCompte(array $data): void
     {
-        $sql = "INSERT INTO compte (numerotel, typecompte, userid)
-                VALUES (:numerotel, :typecompte, :userid)";
-        $stmt = $this->database->getPdo()->prepare($sql);
-        $stmt->execute([
-            ':numerotel' => $data['numerotel'],
-            ':typecompte' => $data['typecompte'],
-            ':userid' => $data['userid'],
-        ]);
+        try {
+            $sql = "INSERT INTO compte (datecreation, numerotel, typecompte, userid)
+                    VALUES (NOW(), :numerotel, :typecompte, :userid)";
+            $stmt = $this->database->getPdo()->prepare($sql);
+            $stmt->execute([
+                ':numerotel' => $data['numerotel'],
+                ':typecompte' => $data['typecompte'],
+                ':userid' => $data['userid'],
+            ]);
+            // var_dump($data); die;
+        } catch (\Throwable $th) {
+            throw new \Exception($th->getMessage());
+            
+        }
     }
 
     public function getComptesSecondairesByUserId(int $userId): array
@@ -49,5 +55,9 @@ class CompteRepository extends AbstractRepository
     $stmt->execute([':userId' => $userId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
+
+
 
 }

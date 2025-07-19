@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Core\App;
 use App\Core\abstract\AbstractController;
 use App\Service\CompteService;
+use App\Entity\CompteEnum;
 
 class CompteController extends AbstractController
 {
@@ -49,32 +50,34 @@ class CompteController extends AbstractController
   public function store()
 {
     $user = $this->session->get('user');
-
+    
     if (!$user || !$user->getId()) {
         header('Location: /');
         exit;
     }
-
+    
     $data = [
         'numerotel' => trim($_POST['numerotel'] ?? ''),
-        'typecompte' => 'secondaire',
+        'typecompte' => CompteEnum::Secondaire->value,
         'userid' => $user->getId(),
     ];
-
+    // var_dump($user); die;
+    
     $this->compteService->ajouterCompte($data);
     header('Location: /compte');
 }
 public function listeSecondaires()
 {
     $user = $this->session->get('user');
-
+    
     if (!$user || !$user->getId()) {
         echo "Utilisateur non connecté.";
         return;
     }
-
+    
     $userId = $user->getId();
     $comptesSecondaires = $this->compteService->getComptesSecondaires($userId);
+    // var_dump($comptesSecondaires); die;
 
     $data = ['comptes' => $comptesSecondaires];
     $this->renderIndex('compte/listeCompte', $data);
