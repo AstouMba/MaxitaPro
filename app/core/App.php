@@ -26,7 +26,7 @@ $path = __DIR__ . '/../config/service.yaml';
         foreach ($parsed as $category) {
             foreach ($category as $key => $class) {
                 self::$dependencies[$key] = $class;
-            }
+            } 
         }
     }
 
