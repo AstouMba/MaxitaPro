@@ -6,10 +6,10 @@ use App\core\Session;
 abstract class AbstractController
 {
     protected $communLayout = 'base';
-    protected Session $session;
-
+    // protected Session $session;
+protected Session $session;
     public function __construct() {
-        $this->session = App::getDependencies('session');
+        $this->session=App::getDependencies('session');
     }  
     public function renderIndex(string $view, array $data = []){
         extract($data); 

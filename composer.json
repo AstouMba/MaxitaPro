@@ -9,7 +9,7 @@
             "App\\Controller\\": "src/controller",
             "App\\Repository\\": "src/repository",
             "App\\Service\\": "src/services",
-            "App\\Core\\Middlewares\\": "core/middlewares",
+            "App\\Core\\Middlewares\\": "app/core/middlewares",
             "App\\Core\\abstract\\": "app/core/abstract"
             
         }
@@ -22,5 +22,8 @@
     ],
     "require": {
         "vlucas/phpdotenv": "^5.6"
-    }
+    },
+    "scripts": {
+    "database:migrate": "php migrations/Migration.php"
+  }
 }

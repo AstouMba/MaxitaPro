@@ -30,19 +30,19 @@ class Session{
     }
 
     public static function unset($key){
-        unset($_SESSION[$key]);
+        if (isset($_SESSION[$key])) {
+             unset($_SESSION[$key]);
+
+        }
     }
 
-    public static function isset($key){
+    public function isset($key):bool{
         return isset($_SESSION[$key]);
 
     }
 
-    public static function destroy(){
-        session_unset();
-        session_destroy();
-        self::$instance = null;
-
+    public  function destroy(string $key){
+    $this->unset($key);
     }
 
    

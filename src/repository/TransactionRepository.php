@@ -1,17 +1,16 @@
 <?php
 namespace App\Repository;
-use App\Core\Database;
-use App\Core\App;
+use App\Core\abstract\AbstractRepository;
+
 use PDO;
-class TransactionRepository
+class TransactionRepository extends AbstractRepository
 {
-    private Database $database;
     private static ?TransactionRepository $instance = null;
 
     public function __construct()
     {
 
-        $this->database = App::getDependencies('database');
+        parent::__construct();
     }
     public static function getInstance(): self
     {
@@ -24,17 +23,45 @@ class TransactionRepository
 
     public function selectLastTenTransactions(int $id): ?array
     {
-        $sql = "SELECT * FROM transaction where compteid = :id ";
+        $sql = "SELECT * FROM transaction where compteid = :id  ORDER BY date DESC LIMIT 10";
         $stmt = $this->database->getPdo()->prepare($sql);
         $stmt->execute(['id' => $id]);
         $transactions = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $transactions[] = $row;
         }
-     
-            return $transactions;
+
+        return $transactions;
 
     }
+
+    public function selectAllTransactions(int $id): ?array
+    {
+        $sql = "SELECT * FROM transaction where compteid = :id ORDER BY date DESC LIMIT 10";
+        $stmt = $this->database->getPdo()->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $alltransactions = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $alltransactions[] = $row;
+        }
+        return $alltransactions;
+    }
+ public function countTransactionsByCompte(int $compteId): int
+{
+    $stmt = $this->database->getPdo()->prepare("SELECT COUNT(*) FROM transaction WHERE compteid = ?");
+    $stmt->execute([$compteId]);
+    return (int) $stmt->fetchColumn();
+}
+
+public function findPaginatedTransactions(int $compteId, int $limit, int $offset): array
+{
+    $stmt = $this->database->getPdo()->prepare(
+        "SELECT * FROM transaction WHERE compteid = ? ORDER BY date DESC LIMIT ? OFFSET ?"
+    );
+    $stmt->execute([$compteId, $limit, $offset]);
+    return $stmt->fetchAll();
+}
+
 
 
 }

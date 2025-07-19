@@ -8,21 +8,56 @@ return $routes = [
 
     "/" => [
         "controller" => SecurityController::class,
-        "action" => "login"
+        "action" => "login",
+
+
+    ],
+      "/logout" => [
+        "controller" => SecurityController::class,
+        "action" => "logout",
 
     ],
     "/auth" => [
         "controller" => SecurityController::class,
-        "action" => "auth"
+        "action" => "auth",
 
     ],
     "/compte" => [
         "controller" => CompteController::class,
-        "action" => "index"
+        "action" => "index",
+        "middleware"=>"auth"
+
     ],
+     "/store" => [
+    "controller" => CompteController::class,
+    "action" => "store",
+    "middleware" => "auth"
+],
+"/ajouterCompte" => [
+    "controller" => CompteController::class,
+    "action" => "create",
+    "middleware" => "auth"
+],
+"/compte/listeCompte" => [
+    "controller" => CompteController::class,
+    "action" => "listeSecondaires",
+    "middleware" => "auth"
+],
+
+
+
+
     "/transaction" => [
         "controller" => TransactionController::class,
-        "action" => "get"
+        "action" => "get",
+         "middleware"=>"auth"
+
+    ],
+     "/transactions" => [
+        "controller" => TransactionController::class,
+        "action" => "index",
+        "middleware"=>"auth"
+
     ]
 
 ];

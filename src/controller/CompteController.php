@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Core\App;
@@ -11,30 +12,74 @@ class CompteController extends AbstractController
 
     public function __construct()
     {
-        parent::__construct();
-        $this->compteService = App::getDependencies('compteService');
+        parent::__construct(); 
+        $this->compteService = App::getDependencies('compteService'); 
     }
 
     public function index()
     {
-        $userId = $this->session->get('user')['id'];
-        if (!$userId) {
+        $user = $this->session->get('user'); 
+
+        if (!$user || !$user->getId()) {
             echo "Utilisateur non connecté.";
             return;
         }
-        
+
+        $userId = $user->getId(); 
         $compte = $this->compteService->getSolde($userId);
-        if($compte){
+
+        if ($compte) {
             $this->session->set('compte', $compte);
             header('Location:/transaction');
-            
+        } else {
+            echo "Aucun compte principal trouvé.";
         }
-        // var_dump($compte); die;
-
     }
 
-    public function create() {}
-    public function store() {}
+   public function create()
+{
+    $data = [
+        'errors' => $this->session->get('errors') ?? [],
+        'old' => $this->session->get('old') ?? [],
+    ];
+    $this->renderIndex('compte/ajouterCompte', $data);
+}
+
+
+  public function store()
+{
+    $user = $this->session->get('user');
+
+    if (!$user || !$user->getId()) {
+        header('Location: /');
+        exit;
+    }
+
+    $data = [
+        'numerotel' => trim($_POST['numerotel'] ?? ''),
+        'typecompte' => 'secondaire',
+        'userid' => $user->getId(),
+    ];
+
+    $this->compteService->ajouterCompte($data);
+    header('Location: /compte');
+}
+public function listeSecondaires()
+{
+    $user = $this->session->get('user');
+
+    if (!$user || !$user->getId()) {
+        echo "Utilisateur non connecté.";
+        return;
+    }
+
+    $userId = $user->getId();
+    $comptesSecondaires = $this->compteService->getComptesSecondaires($userId);
+
+    $data = ['comptes' => $comptesSecondaires];
+    $this->renderIndex('compte/listeCompte', $data);
+}
+
 
     public function edit() {}
     public function show() {}

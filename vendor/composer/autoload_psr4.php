@@ -17,7 +17,7 @@ return array(
     'App\\Repository\\' => array($baseDir . '/src/repository'),
     'App\\Entity\\' => array($baseDir . '/src/entity'),
     'App\\Core\\abstract\\' => array($baseDir . '/app/core/abstract'),
-    'App\\Core\\Middlewares\\' => array($baseDir . '/core/middlewares'),
+    'App\\Core\\Middlewares\\' => array($baseDir . '/app/core/middlewares'),
     'App\\Core\\' => array($baseDir . '/app/core'),
     'App\\Controller\\' => array($baseDir . '/src/controller'),
     'App\\Config\\' => array($baseDir . '/app/config'),

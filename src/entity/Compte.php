@@ -6,7 +6,7 @@ namespace App\Entity;
 use App\Entity\CompteEnum;
 use DateTime;
 
-class CompteEntity
+class Compte
 {
     private ?int $id = null;
     private string $numero;

@@ -7,29 +7,49 @@ use App\Core\App;
 class TransactionController extends AbstractController
 {
     private TransactionService $transactionService;
- public function __construct()
+    public function __construct()
     {
+
+
         parent::__construct();
         $this->transactionService = App::getDependencies('transactionService');
     }
-      public function get()
+    public function get()
     {
-       $compteId= $this->session->get('compte')['id'];
-       $transactions=$this->transactionService->getTransactions($compteId);
+        $compteId = $this->session->get('compte')['id'];
+        $transactions = $this->transactionService->getTransactions($compteId);
+        if ($transactions) {
 
-    //    var_dump($transactions);
-    //    die;
-    if ($transactions) {
-        $this->session->set('transactions',$transactions);
-        $this->renderIndex("transactions/index",[
-            'transactions'=>$transactions
+            $this->session->set('transactions', $transactions);
+            $this->renderIndex("transactions/index", [
+                'transactions' => $transactions
+            ]);
+        }
+
+
+
+
+    }
+    public function index()
+    {
+        $compteId = $this->session->get('compte')['id'];
+        $currentPage = (int) ($_GET['page'] ?? 1);
+        $perPage = 10;
+
+        $data = $this->transactionService->getPaginatedTransactions($compteId, $perPage, $currentPage);
+
+        $this->renderIndex("transactions/all", [
+            'alltransactions' => $data['transactions'],
+            'pagination' => $data['pagination']
         ]);
+    }
 
-    }
-    }
+
+
+
     public function store()
     {
-      
+
     }
 
 
@@ -41,11 +61,8 @@ class TransactionController extends AbstractController
     public function edit()
     {
     }
-    public function index()
-    {
-    }
-  
-  
+
+
 
     public function show()
     {

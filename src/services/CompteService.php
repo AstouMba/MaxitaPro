@@ -3,7 +3,8 @@
 namespace App\Service;
 
 use App\Repository\CompteRepository;
-use APP\Core\App;
+use App\Core\App;
+
 class CompteService
 {
     private CompteRepository $compteRepository;
@@ -11,12 +12,13 @@ class CompteService
 
     public function __construct()
     {
-        $this->compteRepository = APP::getDependencies('compteRepository');
+        $this->compteRepository = App::getDependencies('compteRepository'); // méthode correcte
     }
 
-    public static function getInstance():self {
-        if(self::$instance===null){
-            self::$instance = new Self();
+    public static function getInstance(): self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
         }
         return self::$instance;
     }
@@ -25,4 +27,15 @@ class CompteService
     {
         return $this->compteRepository->getSoldeByUserId($userId);
     }
+
+    public function ajouterCompte(array $data): void
+    {
+        $this->compteRepository->insertCompte($data);
+    }
+
+    public function getComptesSecondaires(int $userId): array
+{
+    return $this->compteRepository->getComptesSecondairesByUserId($userId);
+}
+
 }
