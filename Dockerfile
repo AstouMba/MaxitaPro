@@ -38,7 +38,7 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 
 RUN echo "DB_USER=\${DB_USER}" > .env && \
     echo "DB_PASSWORD=\${DB_PASSWORD}" >> .env && \
-    echo "dsn=\${dsn}" >> .env
+    echo "DSN=\${DSN}" >> .env
 # Exposer le port
 EXPOSE 9000
 
