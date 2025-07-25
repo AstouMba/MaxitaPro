@@ -20,12 +20,6 @@ function loadEnv(): array
     return $env;
 }
 
-function prompt(string $message): string
-{
-    echo $message;
-    return trim(fgets(STDIN));
-}
-
 try {
     $config = loadEnv();
 
@@ -38,18 +32,14 @@ try {
 
     // Définition noms tables adaptés
     if ($driver === 'pgsql') {
-        // Postgres : noms en minuscules, pluriel, évite mots réservés
         $tableUtilisateur = 'utilisateurs';
         $tableCompte = 'compte';
-        $tableTransaction = 'transactions';
+        $tableTransaction = 'transaction';
     } else {
-        // MySQL : noms avec majuscules comme initialement (adapter si tu veux)
         $tableUtilisateur = 'Utilisateurs';
         $tableCompte = 'Compte';
         $tableTransaction = 'Transaction';
     }
-
-    
 
     // Démarre transaction
     $pdo->beginTransaction();
@@ -59,6 +49,7 @@ try {
 
     $Utilisateurs = [
         [
+            'id' => '1',
             'nom' => 'Diop',
             'prenom' => 'Amadou',
             'login' => 'AD',
@@ -70,6 +61,7 @@ try {
             'typeuser' => 'client'
         ],
         [
+            'id' => '2',
             'nom' => 'Fall',
             'prenom' => 'Fatou',
             'login' => 'FF',
@@ -81,6 +73,7 @@ try {
             'typeuser' => 'client'
         ],
         [
+            'id' => '3',
             'nom' => 'Ndiaye',
             'prenom' => 'Moussa',
             'login' => 'MN',
@@ -92,6 +85,7 @@ try {
             'typeuser' => 'client'
         ],
         [
+            'id' => '4',
             'nom' => 'Ba',
             'prenom' => 'Aissatou',
             'login' => 'AB',
@@ -103,6 +97,7 @@ try {
             'typeuser' => 'service_commercial'
         ],
         [
+             'id' => '5',
             'nom' => 'Sow',
             'prenom' => 'Ibrahim',
             'login' => 'IS',
@@ -115,11 +110,22 @@ try {
         ]
     ];
 
-    $stmtUser = $pdo->prepare("
-        INSERT INTO $Utilisateur 
-        (nom, prenom, login, password, numerocarteidentite, photorecto, photoverso, adresse, typeuser) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ");
+    if ($driver === 'pgsql') {
+        $stmtUser = $pdo->prepare("
+            INSERT INTO $tableUtilisateur 
+            (nom, prenom, login, password, numerocarteidentite, photorecto, photoverso, adresse, typeuser) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            RETURNING id
+        ");
+    } else {
+        $stmtUser = $pdo->prepare("
+            INSERT INTO $tableUtilisateur 
+            (nom, prenom, login, password, numerocarteidentite, photorecto, photoverso, adresse, typeuser) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ");
+    }
+
+    $userIds = [];
 
     foreach ($Utilisateurs as $user) {
         $stmtUser->execute([
@@ -127,6 +133,12 @@ try {
             $user['numerocarteidentite'], $user['photorecto'], $user['photoverso'],
             $user['adresse'], $user['typeuser']
         ]);
+        if ($driver === 'pgsql') {
+            $id = $stmtUser->fetchColumn();
+        } else {
+            $id = $pdo->lastInsertId();
+        }
+        $userIds[] = $id;
     }
 
     // 2. Insertion comptes
@@ -134,74 +146,93 @@ try {
 
     $comptes = [
         [
+             'id' => '1',
             'solde' => 150000.50,
             'numerotel' => '+221701234567',
             'typecompte' => 'principal',
-            'userid' => 1
+            'userid' => $userIds[1]
         ],
-        [
+        [     'id' => '1',
             'solde' => 25000.00,
             'numerotel' => '+221701234568',
             'typecompte' => 'secondaire',
-            'userid' => 1
+            'userid' => $userIds[1]
         ],
         [
+                 'id' => '1',
             'solde' => 75000.75,
             'numerotel' => '+221707654321',
             'typecompte' => 'principal',
-            'userid' => 2
+            'userid' => $userIds[1]
         ],
         [
+                 'id' => '2',
             'solde' => 200000.00,
             'numerotel' => '+221709876543',
             'typecompte' => 'principal',
-            'userid' => 3
+            'userid' => $userIds[2]
         ],
         [
+                 'id' => '2',
             'solde' => 50000.25,
             'numerotel' => '+221709876544',
             'typecompte' => 'secondaire',
-            'userid' => 3
+            'userid' => $userIds[2]
         ],
         [
+            'id' => '3',
             'solde' => 10000.00,
             'numerotel' => '+221705555555',
             'typecompte' => 'principal',
-            'userid' => 4
+            'userid' => $userIds[3]
         ]
     ];
 
+if ($driver === 'pgsql') {
     $stmtCompte = $pdo->prepare("
-        INSERT INTO $tableCompte (solde, numerotel, typecompte, userid) 
+        INSERT INTO $tableCompte (solde, numerotel, typecompte, userid)
+        VALUES (?, ?, ?, ?)
+        RETURNING id
+    ");
+} else {
+    $stmtCompte = $pdo->prepare("
+        INSERT INTO $tableCompte (solde, numerotel, typecompte, userid)
         VALUES (?, ?, ?, ?)
     ");
+}
 
-    foreach ($comptes as $compte) {
-        $stmtCompte->execute([
-            $compte['solde'], $compte['numerotel'], 
-            $compte['typecompte'], $compte['userid']
-        ]);
-    }
+
+  $compteIds = [];
+
+foreach ($comptes as $compte) {
+    $stmtCompte->execute([
+        $compte['solde'], $compte['numerotel'],
+        $compte['typecompte'], $compte['userid']
+    ]);
+
+    $id = ($driver === 'pgsql') ? $stmtCompte->fetchColumn() : $pdo->lastInsertId();
+    $compteIds[] = $id;
+}
+
 
     // 3. Insertion transactions
     echo "💰 Insertion des transactions...\n";
 
-    $transactions = [
-        // idem que ton tableau d'origine, inchangé
-        [
-            'typetransaction' => 'depot',
-            'montant' => 100000.00,
-            'compteid' => 1,
-            'date' => date('Y-m-d H:i:s', strtotime('-30 days'))
-        ],
-        // ... autres transactions
-        [
-            'typetransaction' => 'retrait',
-            'montant' => 2000.00,
-            'compteid' => 3,
-            'date' => date('Y-m-d H:i:s')
-        ]
-    ];
+  $transactions = [
+    [
+        'typetransaction' => 'depot',
+        'montant' => 100000.00,
+        'compteid' => $compteIds[0],
+        'date' => date('Y-m-d H:i:s', strtotime('-30 days'))
+    ],
+    [
+        'typetransaction' => 'retrait',
+        'montant' => 2000.00,
+        'compteid' => $compteIds[1],
+        'date' => date('Y-m-d H:i:s')
+    ]
+];
+
 
     if ($driver === 'mysql') {
         $stmtTransaction = $pdo->prepare("
@@ -209,7 +240,6 @@ try {
             VALUES (?, ?, ?, ?)
         ");
     } else {
-        // Pour Postgres, casting explicite de typetransaction en VARCHAR
         $stmtTransaction = $pdo->prepare("
             INSERT INTO $tableTransaction (typetransaction, montant, compteid, date) 
             VALUES (?::VARCHAR, ?, ?, ?)
@@ -228,14 +258,14 @@ try {
 
     echo "\n✅ Seeding terminé avec succès !\n\n";
     echo "📊 Résumé des données insérées :\n";
-    echo "   • " . count($utilisateurs) . " utilisateurs\n";
+    echo "   • " . count($Utilisateurs) . " utilisateurs\n";
     echo "   • " . count($comptes) . " comptes\n";
     echo "   • " . count($transactions) . " transactions\n\n";
 
     echo "🔐 Comptes de test créés :\n";
-    echo "   👤 Client 1 : AM/ password123\n";
-    echo "   👤 Client 2 : FF/ password456\n";
-    echo "   👤 Client 3 : MN/ password789\n";
+    echo "   👤 Client 1 : AD / password123\n";
+    echo "   👤 Client 2 : FF / password456\n";
+    echo "   👤 Client 3 : MN / password789\n";
     echo "   🏢 Commercial 1 : AB / admin123\n";
     echo "   🏢 Commercial 2 : IS / admin456\n\n";
 

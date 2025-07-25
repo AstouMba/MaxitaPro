@@ -13,7 +13,6 @@ function writeEnvIfNotExists(array $config): void
     $envPath = __DIR__ . '/../.env';
     if (!file_exists($envPath)) {
         $env = <<<ENV
-APP_URL=http://localhost:8000
 DB_USERNAME={$config['username']}
 DB_PASSWORD={$config['password']}
 DSN={$config['driver']}:host={$config['host']};port={$config['port']};dbname={$config['dbname']};
