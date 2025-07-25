@@ -33,8 +33,8 @@ $password = prompt("Mot de passe : ");
 $dbName = prompt("Nom de la base à créer : ");
 
 try {
-    $dsn = "$driver:host=$host;port=$port";
-    $pdo = new PDO($dsn, $username, $password);
+    $DSN = "$driver:host=$host;port=$port";
+    $pdo = new PDO($DSN, $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if ($driver === 'mysql') {
@@ -60,8 +60,8 @@ try {
         }
     }
 
-    $dsn = "$driver:host=$host;port=$port;dbname=$dbName";
-    $pdo = new PDO($dsn, $username, $password);
+    $DSN = "$driver:host=$host;port=$port;dbname=$dbName";
+    $pdo = new PDO($DSN, $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if ($driver === 'mysql') {
