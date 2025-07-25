@@ -24,6 +24,8 @@ WORKDIR /var/www/html
 # Copier les fichiers
 COPY . .
 
+
+
 # Installer les dépendances PHP
 RUN composer install --no-dev --optimize-autoloader || true
 
@@ -34,6 +36,9 @@ RUN rm /etc/nginx/sites-enabled/default
 COPY default.conf /etc/nginx/conf.d/default.conf
 # COPY supervisord.conf /etc/supervisord.conf
 
+RUN echo "DB_USER=\${DB_USER}" > .env && \
+    echo "DB_PASSWORD=\${DB_PASSWORD}" >> .env && \
+    echo "dsn=\${dsn}" >> .env
 # Exposer le port
 EXPOSE 9000
 

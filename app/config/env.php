@@ -1,6 +1,8 @@
 <?php
 
-$dotenv = Dotenv\Dotenv::createImmutable('../');
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__  .'/../../');
 $dotenv->load();
 
 // define('APP_URL', $_ENV['APP_URL']);
