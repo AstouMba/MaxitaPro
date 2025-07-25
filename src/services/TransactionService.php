@@ -1,10 +1,8 @@
 <?php
 namespace App\Service;
 
-use App\Core\Singleton;
 use App\Repository\TransactionRepository;
 use App\Core\App;
-use App\Service\PaginationService;
 
 class TransactionService 
 {
@@ -30,25 +28,5 @@ public function getTransactionsByCompteId(int $compteId): array
 {
     return $this->transactionRepository->selectAllTransactions($compteId);
 }
-
-
-    // public function getPaginatedTransactions(int $compteId, int $perPage, int $currentPage): array
-    // {
-    //     $paginationService = new PaginationService();
-
-    //     // 1. Nombre total de transactions
-    //     $total = $this->transactionRepository->countTransactionsByCompte($compteId);
-
-    //     // 2. Calcul des données de pagination
-    //     $pagination = $paginationService->paginate($total, $perPage, $currentPage);
-
-    //     // 3. Récupération des transactions paginées
-    //     $transactions = $this->transactionRepository->findPaginatedTransactions($compteId, $pagination['limit'], $pagination['offset']);
-
-    //     return [
-    //         'transactions' => $transactions,
-    //         'pagination' => $pagination
-    //     ];
-    // }
 
 }

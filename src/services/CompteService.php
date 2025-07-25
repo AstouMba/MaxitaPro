@@ -13,7 +13,7 @@ class CompteService extends Singleton
 
     public function __construct()
     {
-        $this->compteRepository = App::getDependencies('compteRepository'); // méthode correcte
+        $this->compteRepository = App::getDependencies('compteRepository');
     }
 
     public function getSolde(int $userId): ?array
@@ -30,7 +30,6 @@ public function getAllComptes(int $userId): array
 {
     return $this->compteRepository->getAllComptesByUserId($userId);
 }
-
 
 public function getCompteById(int $compteId): ?array
 {
