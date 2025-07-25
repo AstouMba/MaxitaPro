@@ -9,10 +9,11 @@ class Database
 {
     private  PDO $pdo;
     private static ?Database $instance = null;
-
     public function __construct(){
         
         try{
+        // var_dump(DSN, DB_USERNAME, DB_PASSWORD); die;
+
             $this->pdo = new PDO(DSN, DB_USERNAME, DB_PASSWORD);
         }catch(PDOException $e){
             echo "Error: " . $e->getMessage();

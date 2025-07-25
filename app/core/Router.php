@@ -7,6 +7,7 @@ class Router
 {
     public static function resolver(array $routes)
     {
+        // var_dump(DSN); die;
 // Exemple simplifié
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); 
 
