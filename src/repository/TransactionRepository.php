@@ -34,33 +34,20 @@ class TransactionRepository extends AbstractRepository
         return $transactions;
 
     }
-
-    public function selectAllTransactions(int $id): ?array
-    {
-        $sql = "SELECT * FROM transaction where compteid = :id ORDER BY date DESC LIMIT 10";
-        $stmt = $this->database->getPdo()->prepare($sql);
-        $stmt->execute(['id' => $id]);
-        $alltransactions = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $alltransactions[] = $row;
-        }
-        return $alltransactions;
-    }
- public function countTransactionsByCompte(int $compteId): int
+public function selectAllTransactions(int $id): ?array
 {
-    $stmt = $this->database->getPdo()->prepare("SELECT COUNT(*) FROM transaction WHERE compteid = ?");
-    $stmt->execute([$compteId]);
-    return (int) $stmt->fetchColumn();
+    $sql = "SELECT * FROM transaction WHERE compteid = :id ORDER BY date DESC LIMIT 10";
+    $stmt = $this->database->getPdo()->prepare($sql);
+    $stmt->execute([':id' => $id]);
+
+    $alltransactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return $alltransactions ?: [];
 }
 
-public function findPaginatedTransactions(int $compteId, int $limit, int $offset): array
-{
-    $stmt = $this->database->getPdo()->prepare(
-        "SELECT * FROM transaction WHERE compteid = ? ORDER BY date DESC LIMIT ? OFFSET ?"
-    );
-    $stmt->execute([$compteId, $limit, $offset]);
-    return $stmt->fetchAll();
-}
+
+
+
 
 
 

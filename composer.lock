@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "301124dfa77b31d0571c0e0a7dc58044",
+    "content-hash": "0160cd6b4edd7803d37ca43fc9c6fcb5",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -67,6 +67,46 @@
                 }
             ],
             "time": "2024-07-20T21:45:45+00:00"
+        },
+        {
+            "name": "mrsems/paginator-php",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/papesembene/PaginatorPHP.git",
+                "reference": "11166a2e178e347d32b9e698367bcfec7bb0377e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/papesembene/PaginatorPHP/zipball/11166a2e178e347d32b9e698367bcfec7bb0377e",
+                "reference": "11166a2e178e347d32b9e698367bcfec7bb0377e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "App\\Paginator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pape Sembene",
+                    "email": "sembenpape4@gmail.com"
+                }
+            ],
+            "description": "Simple PHP array paginator.",
+            "support": {
+                "issues": "https://github.com/papesembene/PaginatorPHP/issues",
+                "source": "https://github.com/papesembene/PaginatorPHP/tree/v1.0.0"
+            },
+            "time": "2025-07-16T15:34:16+00:00"
         },
         {
             "name": "phpoption/phpoption",

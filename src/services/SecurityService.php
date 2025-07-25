@@ -1,10 +1,11 @@
 <?php
 namespace App\Service;
 
+use App\Core\Singleton;
 use App\Repository\UtilisateurRepository;
 use App\Core\App;
 use App\Entity\Utilisateurs;
-class SecurityService
+class SecurityService extends Singleton
 {
     private UtilisateurRepository $utilisateurRepository;
     private static ?SecurityService $instance=null;
@@ -13,14 +14,6 @@ class SecurityService
         $this->utilisateurRepository =App::getDependencies('utilisateurRepository');
         
     }
-
-    public static function getInstance(): self{
-        if(self::$instance===null){
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
-
 public function getUserByLoginAndPassword($login , $password): ?Utilisateurs {
     return $this->utilisateurRepository->selectByLoginAndPassword($login, $password);
 }

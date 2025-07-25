@@ -69,18 +69,42 @@ class CompteController extends AbstractController
 public function listeSecondaires()
 {
     $user = $this->session->get('user');
-    
+
     if (!$user || !$user->getId()) {
         echo "Utilisateur non connecté.";
         return;
     }
-    
-    $userId = $user->getId();
-    $comptesSecondaires = $this->compteService->getComptesSecondaires($userId);
-    // var_dump($comptesSecondaires); die;
 
-    $data = ['comptes' => $comptesSecondaires];
+    $userId = $user->getId();
+    $comptes = $this->compteService->getAllComptes($userId);
+
+    $data = ['comptes' => $comptes];
     $this->renderIndex('compte/listeCompte', $data);
+}
+
+public function switchCompte()
+{
+    $compteId = $_GET['id'] ?? null;
+    $user = $this->session->get('user');
+
+    if (!$compteId || !$user || !$user->getId()) {
+        echo "Erreur de session ou de paramètre.";
+        return;
+    }
+
+    $compte = $this->compteService->getCompteById((int) $compteId);
+
+    if (!$compte || $compte['userid'] !== $user->getId()) {
+        echo "Compte introuvable ou non autorisé.";
+        return;
+    }
+
+   
+    // Recharge le compte depuis la base après la mise à jour
+    $compte = $this->compteService->getCompteById((int) $compteId);
+    $this->session->set('compte', $compte);
+
+    header('Location: /transaction');
 }
 
 

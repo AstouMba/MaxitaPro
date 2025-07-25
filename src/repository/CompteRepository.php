@@ -48,14 +48,22 @@ class CompteRepository extends AbstractRepository
         }
     }
 
-    public function getComptesSecondairesByUserId(int $userId): array
+public function getAllComptesByUserId(int $userId): array
 {
-    $sql = "SELECT * FROM compte WHERE userid = :userId AND typecompte = 'secondaire'";
+    $sql = "SELECT * FROM compte WHERE userid = :userId";
     $stmt = $this->database->getPdo()->prepare($sql);
     $stmt->execute([':userId' => $userId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+
+public function findCompteById(int $compteId): ?array
+{
+    $sql = "SELECT * FROM compte WHERE id = :compteId";
+    $stmt = $this->database->getPdo()->prepare($sql);
+    $stmt->execute([':compteId' => $compteId]);
+    return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+}
 
 
 

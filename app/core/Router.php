@@ -7,7 +7,8 @@ class Router
 {
     public static function resolver(array $routes)
     {
-        $uri = $_SERVER['REQUEST_URI'];
+// Exemple simplifié
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); 
 
         if (array_key_exists($uri, $routes)) {
             $controllerName = $routes[$uri]['controller'];
