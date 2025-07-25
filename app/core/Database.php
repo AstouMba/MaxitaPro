@@ -18,14 +18,16 @@ class Database
 // DB_DRIVE=pgsql
 
 $dns="pgsql:host=switchyard.proxy.rlwy.net;port=42194;dbname=railway";
-$dbname="railway";
+$user="postgres";
 $password="BBpzoFKMWtZOlCOnvmtuNFJPnhTfISFu";
+
+// postgresql://postgres:BBpzoFKMWtZOlCOnvmtuNFJPnhTfISFu@switchyard.proxy.rlwy.net:42194/railway
 
 
         try{
         // var_dump(DSN, DB_USERNAME, DB_PASSWORD); die;
 
-            $this->pdo = new PDO($dns,  $dbname,$password);
+            $this->pdo = new PDO($dns,  $user,$password);
         }catch(PDOException $e){
             echo "Error: " . $e->getMessage();
         }
