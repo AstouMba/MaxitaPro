@@ -25,44 +25,60 @@ class SecurityController extends AbstractController
     {
         $this->renderIndex('security/login');
     }
-public function auth()
-{
-    $data = $_POST;
-    $validator = App::getDependencies('validator');
+    public function auth()
+    {
+        $data = $_POST;
+        $validator = App::getDependencies('validator');
 
-    $rules = [
-        'login' => ['requiredLogin'],
-        'password' => ['requiredPassword']
-    ];
+        $rules = [
+            'login' => ['requiredLogin'],
+            'password' => ['requiredPassword']
+        ];
 
-    if (!$validator->validate($data, $rules)) {
-        $this->session->set('errors', $validator->getErrors());
-        $this->session->set('old', $data);
-        header("Location: /");
-        exit;
+        if (!$validator->validate($data, $rules)) {
+            $this->session->set('errors', $validator->getErrors());
+            $this->session->set('old', $data);
+            header("Location: /");
+            exit;
+        }
+
+        $user = $this->securityService->getUserByLoginAndPassword($data['login'], $data['password']);
+
+        if ($user) {
+            $this->session->set('user', $user);
+            header("Location: /compte");
+        } else {
+            $this->session->set('errors', ['global' => 'Identifiants invalides']);
+            $this->session->set('old', $data);
+            header("Location: /");
+        }
     }
 
-    $user = $this->securityService->getUserByLoginAndPassword($data['login'], $data['password']);
-
-    if ($user) {
-        $this->session->set('user', $user);
-        header("Location: /compte");
-    } else {
-        $this->session->set('errors', ['global' => 'Identifiants invalides']);
-        $this->session->set('old', $data);
-        header("Location: /");
-    }
-}
-
-public function logout(){
+    public function logout()
+    {
         $this->session->destroy('user');
         $this->renderIndex('security/login');
         exit();
-}
-    public function create() {}
-    public function store() {}
-    public function edit() {}
-    public function index() {}
-    public function show() {}
-    public function delete() {}
+    }
+
+    public function show()
+    {
+        $this->renderIndex('security/inscription');
+    }
+    public function create()
+    {
+    }
+    public function store()
+    {
+    }
+    public function edit()
+    {
+    }
+    public function index()
+    {
+    }
+
+    public function delete()
+    {
+    }
 }

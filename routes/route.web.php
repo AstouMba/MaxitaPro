@@ -25,6 +25,11 @@ return $routes = [
         "middleware" => "auth"
 
     ],
+        "/inscription" => [
+        "controller" => SecurityController::class,
+        "action" => "show",
+
+    ],
     "/compte/store" => [
         "controller" => CompteController::class,
         "action" => "store",
@@ -48,6 +53,12 @@ return $routes = [
     "/transaction" => [
         "controller" => TransactionController::class,
         "action" => "get",
+        "middleware" => "auth"
+
+    ],
+      "/transaction-mode" => [
+        "controller" => TransactionController::class,
+        "action" => "store",
         "middleware" => "auth"
 
     ],

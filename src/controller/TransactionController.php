@@ -57,6 +57,7 @@ class TransactionController extends AbstractController
 
     public function store()
     {
+      $this->renderIndex("transactions/transaction-mode");
 
     }
 

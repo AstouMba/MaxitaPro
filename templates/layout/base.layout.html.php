@@ -92,33 +92,45 @@ $user = $this->session->get('user');
                 </div>
             </div>
 
-            <!-- Navigation -->
-            <nav class="flex-1 px-6">
-                <ul class="space-y-3">
-                    <li class="animate-slide-in" style="animation-delay: 0.1s;">
-                        <a href="/transaction"
-                            class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl bg-gradient-to-r from-orange-600 to-orange-700 shadow-lg">
-                            <i class="fas fa-home text-lg"></i>
-                            <span class="font-medium">Accueil</span>
-                        </a>
-                    </li>
-                    <li class="animate-slide-in" style="animation-delay: 0.2s;">
-                        <a href="#"
-                            class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl hover:bg-gradient-to-r hover:from-orange-600 hover:to-orange-700 hover:shadow-lg transition-all duration-300">
-                            <i class="fas fa-exchange-alt text-lg"></i>
-                            <span class="font-medium">Transactions</span>
-                        </a>
-                    </li>
-                    <li class="animate-slide-in" style="animation-delay: 0.3s;">
-                        <a href="/compte/listeCompte"
-                            class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl hover:bg-gradient-to-r hover:from-orange-600 hover:to-orange-700 hover:shadow-lg transition-all duration-300">
-                            <i class="fas fa-wallet text-lg"></i>
-                            <span class="font-medium">Mes comptes</span>
-                        </a>
+            <?php
+// Fonction pour ajouter les classes si le lien correspond à la page actuelle
+function isActive(string $path): string {
+    $currentUrl = strtok($_SERVER['REQUEST_URI'], '?'); // Enlève les éventuels paramètres GET
+    return $currentUrl === $path
+        ? 'bg-gradient-to-r from-orange-600 to-orange-700 shadow-lg'
+        : 'hover:bg-gradient-to-r from-orange-600 to-orange-700 hover:shadow-lg transition-all duration-300';
+}
+?>
 
-                    </li>
-                </ul>
-            </nav>
+<!-- Navigation -->
+<nav class="flex-1 px-6">
+    <ul class="space-y-3">
+        <li class="animate-slide-in" style="animation-delay: 0.1s;">
+            <a href="/transaction"
+               class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl <?= isActive('/transaction') ?>">
+                <i class="fas fa-home text-lg"></i>
+                <span class="font-medium">Accueil</span>
+            </a>
+        </li>
+
+        <li class="animate-slide-in" style="animation-delay: 0.2s;">
+            <a href="/transaction-mode"
+               class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl">
+                <i class="fas fa-exchange-alt text-lg"></i>
+                <span class="font-medium">Transactions</span>
+            </a>
+        </li>
+
+        <li class="animate-slide-in" style="animation-delay: 0.3s;">
+            <a href="/compte/listeCompte"
+               class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl <?= isActive('/compte/listeCompte') ?>">
+                <i class="fas fa-wallet text-lg"></i>
+                <span class="font-medium">Mes comptes</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
 
             <!-- Logout -->
             <div class="p-6 animate-slide-in" style="animation-delay: 0.4s;">
