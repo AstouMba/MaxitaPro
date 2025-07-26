@@ -5,7 +5,7 @@ namespace App\Core;
 use PDO;
 use PDOException;
 
-class Database
+class Database extends Singleton
 {
     private  PDO $pdo;
     private static ?Database $instance = null;
@@ -34,12 +34,6 @@ $password="BBpzoFKMWtZOlCOnvmtuNFJPnhTfISFu";
 
     }
     
-public static function getInstance():self {
-        if(self::$instance===null){
-            self::$instance = new Self();
-        }
-        return self::$instance;
-    }
     // public static function getInstance(): PDO
     // {
     //     if (self::$connection === null) {
