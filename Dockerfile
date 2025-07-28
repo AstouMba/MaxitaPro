@@ -34,7 +34,6 @@ RUN rm /etc/nginx/sites-enabled/default
 
 # Copier ta configuration nginx et supervisord
 COPY default.conf /etc/nginx/conf.d/default.conf
-# COPY supervisord.conf /etc/supervisord.conf
 
 RUN echo "DB_USER=\${DB_USER}" > .env && \
     echo "DB_PASSWORD=\${DB_PASSWORD}" >> .env && \
