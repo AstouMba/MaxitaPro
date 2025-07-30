@@ -106,7 +106,7 @@
                         </p>
                         <div class="flex justify-center space-x-4 mt-2">
                             <a 
-                                href="<?php $url ?>/" 
+                                href="/" 
                                 class="inline-flex items-center text-orange-600 hover:text-orange-700 font-semibold transition-colors duration-200 space-x-1 text-sm"
                             >
                                 <span>Se connecter</span>
@@ -149,9 +149,9 @@
                 </div>
 
                 <!-- Form -->
-                <form class="space-y-6" action="?>register" method="post">
+                <form class="space-y-6" action="/register" method="post">
                     <!-- Première ligne -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Prénom -->
                         <div class="space-y-2">
                             <label for="prenom" class="block text-sm font-semibold text-slate-700 uppercase tracking-wide">
@@ -213,43 +213,10 @@
                                 <p class="text-sm font-medium">Nom requis</p>
                             </div>
                         </div>
-
-                        <!-- Numéro de téléphone -->
-                        <div class="space-y-2">
-                            <label for="telephone" class="block text-sm font-semibold text-slate-700 uppercase tracking-wide">
-                                <div class="flex items-center space-x-2">
-                                    <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                    </svg>
-                                    <span>Numéro de téléphone</span>
-                                </div>
-                            </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                    </svg>
-                                </div>
-                                <input 
-                                    name="telephone"
-                                    type="tel" 
-                                    class="w-full pl-10 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-slate-50 hover:bg-white focus:bg-white placeholder-slate-400"
-                                    placeholder="Entrez votre numéro de téléphone"
-                                >
-                            </div>
-                            <div class="hidden error-message flex items-center space-x-2 text-red-600">
-                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                <p class="text-sm font-medium">Numéro de téléphone invalide</p>
-                            </div>
-                        </div>
                     </div>
 
-                    <!-- Section principale avec deux colonnes -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <!-- Colonne des champs de saisie -->
-                        <div class="lg:col-span-2 space-y-6">
+                    <!-- Section principale -->
+                    <div class="space-y-6">
                             <!-- Numéro de carte d'identité -->
                             <div class="space-y-2">
                                 <label for="numero_identite" class="block text-sm font-semibold text-slate-700 uppercase tracking-wide">
@@ -342,63 +309,20 @@
                                     <p class="text-sm font-medium">Mot de passe requis</p>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Colonne upload document -->
-                        <div class="lg:col-span-1">
-                            <div class="space-y-2">
-                                <label class="block text-sm font-semibold text-slate-700 uppercase tracking-wide">
-                                    <div class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                                        </svg>
-                                        <span>Document</span>
-                                    </div>
-                                </label>
-                                <div class="h-48 border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-orange-400 transition-all duration-200 bg-slate-50 hover:bg-white flex flex-col items-center justify-center">
-                                    <svg class="w-12 h-12 text-slate-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                                    </svg>
-                                    <div class="text-slate-500 text-sm mb-3 text-center">
-                                        Ajouter un document contenant le recto et le verso de votre pièce d'identité
-                                    </div>
-                                    <label class="cursor-pointer">
-                                        <span class="bg-orange-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors duration-200">
-                                            Choisir un fichier
-                                        </span>
-                                        <input 
-                                            name="document"
-                                            type="file" 
-                                            class="hidden"
-                                            accept="image/*,.pdf"
-                                        >
-                                    </label>
-                                </div>
-                                <div class="hidden error-message flex items-center space-x-2 text-red-600">
-                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    <p class="text-sm font-medium">Document requis</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Submit Button -->
 
                     <div class="pt-4">
-                        
-                        <a href="?>register">
-                            <button
-                            type="button" 
+                        <button
+                            type="submit" 
                             class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3 px-6 rounded-xl hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
-                            >
+                        >
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
                             </svg>
                             <span>Enregistrer</span>
                         </button>
-                    </a>
                     </div>
                 </form>
                 
@@ -418,7 +342,7 @@
                             Déjà inscrit ?
                         </p>
                         <a 
-                            href="#" 
+                            href="/" 
                             class="inline-flex items-center mt-2 text-orange-600 hover:text-orange-700 font-semibold transition-colors duration-200 space-x-1"
                         >
                             <span>Se connecter</span>

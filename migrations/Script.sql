@@ -4,6 +4,7 @@ CREATE TABLE Utilisateurs (
     prenom VARCHAR(100) NOT NULL,
     login VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    telephone VARCHAR(20),
     numerocarteidentite VARCHAR(50) NULL UNIQUE,
     photorecto TEXT,
     photoverso TEXT,
@@ -19,7 +20,7 @@ CREATE TABLE Compte (
     numerotel VARCHAR(20) NOT NULL,
     typecompte VARCHAR(20) NOT NULL CHECK (typecompte IN ('principal', 'secondaire')), 
     userid INTEGER NOT NULL,
-    FOREIGN KEY (userid) REFERENCES users(id) 
+    FOREIGN KEY (userid) REFERENCES Utilisateurs(id) 
 );
 
 

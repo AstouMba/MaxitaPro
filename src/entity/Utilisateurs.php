@@ -9,6 +9,7 @@ class Utilisateurs
     private string $prenom;
     private string $login;
     private string $password;
+    private ?string $telephone;
     private string $numeroCarteIdentite;
     private ?string $photoRecto = null;
     private ?string $photoVerso = null;
@@ -24,6 +25,7 @@ class Utilisateurs
         string $numeroCarteIdentite,
         string $adresse,
         TypeUserEnum $typeUser,
+        ?string $telephone = null,
         ?string $photoRecto = null,
         ?string $photoVerso = null
     ) {
@@ -31,6 +33,7 @@ class Utilisateurs
         $this->prenom = $prenom;
         $this->login = $login;
         $this->password = $password;
+        $this->telephone = $telephone;
         $this->numeroCarteIdentite = $numeroCarteIdentite;
         $this->adresse = $adresse;
         $this->typeUser = $typeUser;
@@ -81,13 +84,22 @@ class Utilisateurs
         $this->password = $password;
     }
 
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+    public function setTelephone(?string $telephone): void
+    {
+        $this->telephone = $telephone;
+    }
+
     public function getNumeroCarteIdentite(): string
     {
         return $this->numeroCarteIdentite;
     }
-    public function setNumeroCarteIdentite(string $numerocarteidentite): void
+    public function setNumeroCarteIdentite(string $numeroCarteIdentite): void
     {
-        $this->numerocarteidentite = $numerocarteidentite;
+        $this->numeroCarteIdentite = $numeroCarteIdentite;
     }
 
     public function getPhotoRecto(): ?string
@@ -143,6 +155,7 @@ class Utilisateurs
             'prenom' => $this->prenom,
             'login' => $this->login,
             'password' => $this->password,
+            'telephone' => $this->telephone,
             'numerocarteidentite' => $this->numeroCarteIdentite,
             'photoRecto' => $this->photoRecto,
             'photoVerso' => $this->photoVerso,
@@ -162,6 +175,7 @@ class Utilisateurs
             $data['numeroCarteIdentite'] ?? '',
             $data['adresse'] ?? '',
             TypeUserEnum::from($data['typeUser'] ?? 'client'),
+            $data['telephone'] ?? null,
             $data['photoRecto'] ?? null,
             $data['photoVerso'] ?? null
         );

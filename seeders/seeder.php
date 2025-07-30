@@ -53,7 +53,8 @@ try {
             'nom' => 'Diop',
             'prenom' => 'Amadou',
             'login' => 'AD',
-            'password' => 'password123',
+            'password' => password_hash('password123', PASSWORD_DEFAULT),
+            'telephone' => null,
             'numerocarteidentite' => '1234567890123',
             'photorecto' => 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAAAAAAAD...',
             'photoverso' => 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAAAAAAAD...',
@@ -65,7 +66,8 @@ try {
             'nom' => 'Fall',
             'prenom' => 'Fatou',
             'login' => 'FF',
-            'password' => 'password456',
+            'password' => password_hash('password456', PASSWORD_DEFAULT),
+            'telephone' => null,
             'numerocarteidentite' => '2345678901234',
             'photorecto' => null,
             'photoverso' => null,
@@ -77,7 +79,8 @@ try {
             'nom' => 'Ndiaye',
             'prenom' => 'Moussa',
             'login' => 'MN',
-            'password' => 'password789' ,
+            'password' => password_hash('password789', PASSWORD_DEFAULT),
+            'telephone' => null,
             'numerocarteidentite' => '3456789012345',
             'photorecto' => null,
             'photoverso' => null,
@@ -89,7 +92,8 @@ try {
             'nom' => 'Ba',
             'prenom' => 'Aissatou',
             'login' => 'AB',
-            'password' => 'admin123',
+            'password' => password_hash('admin123', PASSWORD_DEFAULT),
+            'telephone' => null,
             'numerocarteidentite' => '4567890123456',
             'photorecto' => null,
             'photoverso' => null,
@@ -101,7 +105,8 @@ try {
             'nom' => 'Sow',
             'prenom' => 'Ibrahim',
             'login' => 'IS',
-            'password' => 'admin456',
+            'password' => password_hash('admin456', PASSWORD_DEFAULT),
+            'telephone' => null,
             'numerocarteidentite' => '5678901234567',
             'photorecto' => null,
             'photoverso' => null,
@@ -113,15 +118,15 @@ try {
     if ($driver === 'pgsql') {
         $stmtUser = $pdo->prepare("
             INSERT INTO $tableUtilisateur 
-            (nom, prenom, login, password, numerocarteidentite, photorecto, photoverso, adresse, typeuser) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (nom, prenom, login, password, telephone, numerocarteidentite, photorecto, photoverso, adresse, typeuser) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             RETURNING id
         ");
     } else {
         $stmtUser = $pdo->prepare("
             INSERT INTO $tableUtilisateur 
-            (nom, prenom, login, password, numerocarteidentite, photorecto, photoverso, adresse, typeuser) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (nom, prenom, login, password, telephone, numerocarteidentite, photorecto, photoverso, adresse, typeuser) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
     }
 
@@ -130,7 +135,7 @@ try {
     foreach ($Utilisateurs as $user) {
         $stmtUser->execute([
             $user['nom'], $user['prenom'], $user['login'], $user['password'],
-            $user['numerocarteidentite'], $user['photorecto'], $user['photoverso'],
+            $user['telephone'], $user['numerocarteidentite'], $user['photorecto'], $user['photoverso'],
             $user['adresse'], $user['typeuser']
         ]);
         if ($driver === 'pgsql') {

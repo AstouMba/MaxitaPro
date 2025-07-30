@@ -15,15 +15,18 @@ class UtilisateurRepository extends AbstractRepository
     }
      public function selectByLoginAndPassword($login, $password): ?Utilisateurs
 {
-    $sql = "SELECT * FROM Utilisateurs WHERE login = :login AND password = :password";
+    // D'abord récupérer l'utilisateur par login seulement
+    $sql = "SELECT * FROM Utilisateurs WHERE login = :login";
     $stmt = $this->database->getPdo()->prepare($sql);
-    $stmt->execute([
-        "login" => $login,
-        "password" => $password
-    ]);
+    $stmt->execute(["login" => $login]);
 
     $userData = $stmt->fetch(\PDO::FETCH_ASSOC);
-    return $userData ? Utilisateurs::toObject($userData) : null;
+    
+    if ($userData && password_verify($password, $userData['password'])) {
+        return Utilisateurs::toObject($userData);
+    }
+    
+    return null;
 }
 
 
@@ -37,8 +40,27 @@ class UtilisateurRepository extends AbstractRepository
     return array_map(fn($data) => Utilisateurs::toObject($data), $usersData);
 }
 
+   public function findByLogin(string $login): ?Utilisateurs
+{
+    $sql = "SELECT * FROM Utilisateurs WHERE login = :login";
+    $stmt = $this->database->getPdo()->prepare($sql);
+    $stmt->execute(['login' => $login]);
 
-   public function insertUser(array $data): Utilisateurs
+    $userData = $stmt->fetch(\PDO::FETCH_ASSOC);
+    return $userData ? Utilisateurs::toObject($userData) : null;
+}
+
+public function findByNumeroCarteIdentite(string $numeroCarteIdentite): ?Utilisateurs
+{
+    $sql = "SELECT * FROM Utilisateurs WHERE numeroCarteIdentite = :numeroCarteIdentite";
+    $stmt = $this->database->getPdo()->prepare($sql);
+    $stmt->execute(['numeroCarteIdentite' => $numeroCarteIdentite]);
+
+    $userData = $stmt->fetch(\PDO::FETCH_ASSOC);
+    return $userData ? Utilisateurs::toObject($userData) : null;
+}
+
+   public function insertUser(array $data): int
 {
     $sql = "INSERT INTO Utilisateurs (nom, prenom, login, password, numeroCarteIdentite, adresse, typeUser, photoRecto, photoVerso)
             VALUES (:nom, :prenom, :login, :password, :numeroCarteIdentite, :adresse, :typeUser, :photoRecto, :photoVerso)
@@ -58,7 +80,31 @@ class UtilisateurRepository extends AbstractRepository
     ]);
 
     $userData = $stmt->fetch(\PDO::FETCH_ASSOC);
-    return Utilisateurs::toObject($userData);
+    return $userData['id'];
+}
+
+public function insertUserWithTelephone(array $data): int
+{
+    $sql = "INSERT INTO Utilisateurs (nom, prenom, login, password, telephone, numeroCarteIdentite, adresse, typeUser, photoRecto, photoVerso)
+            VALUES (:nom, :prenom, :login, :password, :telephone, :numeroCarteIdentite, :adresse, :typeUser, :photoRecto, :photoVerso)
+            RETURNING id";
+
+    $stmt = $this->database->getPdo()->prepare($sql);
+    $stmt->execute([
+        ':nom' => $data['nom'],
+        ':prenom' => $data['prenom'],
+        ':login' => $data['login'],
+        ':password' => $data['password'],
+        ':telephone' => $data['telephone'],
+        ':numeroCarteIdentite' => $data['numeroCarteIdentite'],
+        ':adresse' => $data['adresse'],
+        ':typeUser' => $data['typeUser'],
+        ':photoRecto' => $data['photoRecto'] ?? null,
+        ':photoVerso' => $data['photoVerso'] ?? null,
+    ]);
+
+    $userData = $stmt->fetch(\PDO::FETCH_ASSOC);
+    return $userData['id'];
 }
 
 }

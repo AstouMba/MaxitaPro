@@ -47,11 +47,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Fonction pour remplir le formulaire d'inscription avec les données
     function remplirFormulaireInscription(data) {
-        // Remplir les champs du formulaire d'inscription
+        // Remplir les champs récupérés depuis l'API DAFF
         document.querySelector('#form_inscription input[name="nom"]').value = data.nom || '';
         document.querySelector('#form_inscription input[name="prenom"]').value = data.prenom || '';
-        document.querySelector('#form_inscription input[name="telephone"]').value = data.telephone || '';
-        document.querySelector('#form_inscription input[name="numero_identite"]').value = data.numero_identite || '';
+        // Utiliser le CNI de la recherche initiale
+        document.querySelector('#form_inscription input[name="numero_identite"]').value = numeroIdentiteInput.value.trim();
         
         // Note: Les champs login et password restent vides pour que l'utilisateur les saisisse
     }
@@ -146,24 +146,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const formInscriptionElement = document.querySelector('#form_inscription form');
     if (formInscriptionElement) {
         formInscriptionElement.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Ici vous pouvez ajouter la logique de soumission du formulaire d'inscription
-            // Par exemple, validation des champs, envoi des données au serveur, etc.
-            
-            console.log('Formulaire d\'inscription soumis');
-            
-            // Exemple de validation simple
+            // Validation des champs requis
+            const prenom = document.querySelector('#form_inscription input[name="prenom"]').value.trim();
+            const nom = document.querySelector('#form_inscription input[name="nom"]').value.trim();
+            const numeroIdentite = document.querySelector('#form_inscription input[name="numero_identite"]').value.trim();
             const login = document.querySelector('#form_inscription input[name="login"]').value.trim();
             const password = document.querySelector('#form_inscription input[name="password"]').value.trim();
             
-            // if (!login || !password) {
-            //     alert('Veuillez remplir tous les champs obligatoires');
-            //     return;
-            // }
+            if (!prenom || !nom || !numeroIdentite || !login || !password) {
+                e.preventDefault();
+                alert('Veuillez remplir tous les champs obligatoires');
+                return;
+            }
             
-            // Soumettre le formulaire (remplacez par votre logique)
-            // this.submit();
+            // Le formulaire sera soumis normalement à /register
         });
     }
     

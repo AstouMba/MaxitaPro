@@ -30,6 +30,11 @@ return $routes = [
         "action" => "show",
 
     ],
+    "/register" => [
+        "controller" => SecurityController::class,
+        "action" => "store",
+
+    ],
     "/compte/store" => [
         "controller" => CompteController::class,
         "action" => "store",
